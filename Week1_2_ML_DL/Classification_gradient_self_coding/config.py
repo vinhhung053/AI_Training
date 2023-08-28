@@ -5,7 +5,7 @@ def get_args():
 
     parser.add_argument('--max_iter',
                         type=int,
-                        default= 1,
+                        default= 100,
                         help='max_iter')
 
     parser.add_argument('--learning_rate',

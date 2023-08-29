@@ -13,12 +13,16 @@ class Data_loader:
         if(self.shuffle):
             np.random.shuffle(self.indices)
         self.current_id = 0  # su dung cho next trong iter
+
     def get_num_samples(self):
         return self.num_samples
+
     def get_num_feature(self):
         return self.num_feature
+    
     def __iter__(self):
         return self
+
     def __next__(self):
         if self.current_id + self.batch_size > self.num_samples:
             # raise StopIteration  # ket thuc vong lap

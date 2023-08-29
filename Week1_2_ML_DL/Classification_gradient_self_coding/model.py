@@ -1,11 +1,10 @@
 import numpy as np
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 # sigmoid derivative function
 def sigmoid_derivative(x):
-    return x * (1-x)
+    return sigmoid(x) * (1-sigmoid(x))
 
 
 def gradient_descent(x, y, max_iter, learning_rate):
@@ -20,12 +19,10 @@ def gradient_descent(x, y, max_iter, learning_rate):
         # print((sigmoid_derivative(x.dot(current_w1))).shape)
         w1_derivative = 1/n * (x.T).dot((y_predicted - y).dot(current_w2.T)*sigmoid_derivative(x.dot(current_w1)))
         w2_derivative = 1/n * sigmoid(x.dot(current_w1)).T.dot(y_predicted-y)
-        # print(w1_derivative)
-        # print(w2_derivative)
         current_w1 -= learning_rate * w1_derivative
         current_w2 -= learning_rate * w2_derivative
         res.append(cost)
-    return current_w1, current_w2
+        return current_w1, current_w2
     # print(res)
 
 

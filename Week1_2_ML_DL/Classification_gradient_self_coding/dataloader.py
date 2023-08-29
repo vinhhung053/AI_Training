@@ -1,13 +1,32 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
+import numpy as np
 
-def load_data():
-    data_file_path = "/home/lap13385/Downloads/breast+cancer+wisconsin+diagnostic/wdbc.data"
-    data = pd.read_csv(data_file_path, delimiter= ',')
-    x = data.iloc[:,2:]
-    y = data.iloc[:,1]
-    y = y.apply(lambda x: 1 if x == "M" else 0)
-    y = y.values.reshape(-1,1)
-    x_train, x_temp, y_train, y_temp = train_test_split(x,y, test_size = 0.4, random_state = 40)
-    x_val, x_test, y_val, y_test= train_test_split(x_temp,y_temp, test_size = 0.5, random_state = 40)
-    return x_train, y_train, x_val, y_val, x_test, y_test
+
+class Data_loader:
+    def __init__(self,x_data, y_data, batch_size = 32, shuffle = True):
+        self.x_data = x_data
+        self.y_data = y_data
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        self.num_samples = len(x_data)
+        self.num_feature = x_data.shape[1]
+        self.indices = np.arange(self.num_samples) # -> indices su dung cho viec shuffle
+        if(self.shuffle):
+            np.random.shuffle(self.indices)
+        self.current_id = 0  # su dung cho next trong iter
+    def get_num_samples(self):
+        return self.num_samples
+    def get_num_feature(self):
+        return self.num_feature
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current_id + self.batch_size > self.num_samples:
+            # raise StopIteration  # ket thuc vong lap
+            self.current_id = 0
+        batch_indices = self.indices[self.current_id: self.current_id + self.batch_size]
+        x_batch = self.x_data.iloc[batch_indices]
+        y_batch = self.y_data.iloc[batch_indices]
+        self.current_id = self.current_id + self.batch_size
+        return x_batch, y_batch
+
+

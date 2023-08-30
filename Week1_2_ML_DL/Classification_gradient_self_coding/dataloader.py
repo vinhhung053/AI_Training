@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Data_loader:
-    def __init__(self,x_data, y_data, batch_size = 32, shuffle = True):
+    def __init__(self, x_data, y_data, batch_size=32, shuffle=True):
         self.x_data = x_data
         self.y_data = y_data
         self.batch_size = batch_size

@@ -6,12 +6,12 @@ def get_args():
 
     parser.add_argument('--max_iter',
                         type=int,
-                        default=300,
+                        default=100,
                         help='max_iter')
 
     parser.add_argument('--learning_rate',
                         type=float,
-                        default=1,
+                        default=0.1,
                         help='The learning rate')
     parser.add_argument('--batch_size',
                         type=int,

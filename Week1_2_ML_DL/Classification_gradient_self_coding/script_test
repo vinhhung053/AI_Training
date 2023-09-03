@@ -1,0 +1,3 @@
+python train.py --max_iter 100 --learning_rate 0.1 --type_evaluate "positive_negative"
+
+python train.py --max_iter 100 --learning_rate 0.1 --type_evaluate "binary_cross_entropy"

@@ -1,0 +1,23 @@
+Sub1: ai = bi -> Tham
+    a = 1 2 3 4 5 6lam
+    b = 1 2 3 4 5 6
+        1 2 3 4 5 6
+
+Sub2: N <= 20. Đệ quy.
+
+a = 5  6 10 11 18 14
+b = 15 1 7  6  12 1
+    (  ) (  (  )  ) -> Tổng các số trên ngoặc mở -> Sơn -> maximum
+    quay lui, biến dếm số ngoặc mở.
+    Nếu số ngoặc mở - số ngoặc đóng > 0
+        Đóng ngoặc
+        Mở ngoặc
+    Nếu số ngoặc mở - số ngoặc đóng == 0
+        Mở ngoặc
+
+    2^20
+
+    1  2 3  4  5  6
+    (1,2) (3,6) (4,5)
+    Son = 15 + 7 + 6
+    Dãy ngoặc đúng

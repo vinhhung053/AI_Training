@@ -65,7 +65,7 @@ def train(x_train, y_train):
     optimizer = optim.Adam(classifier.parameters(), lr=0.005)  # 0.002 dives 85% acc
     criterion = nn.CrossEntropyLoss()
 
-    epoch_bar = tqdm(range(10),
+    epoch_bar = tqdm(range(20),
                      desc="Training",
                      position=0,
                      total=2)
@@ -106,19 +106,25 @@ def train(x_train, y_train):
         #                       accuracy="{:.2f}".format(acc),
         #                       epoch=epoch)
         # epoch_bar.update()
-    preds_y_test = classifier(x_train)
-    acc_y_test = (preds_y_test.argmax(dim=1) == y_train).float().mean().cpu().item()
-    print(acc_y_test)
-
+        preds_y_test = classifier(x_train)
+        acc_y_test = (preds_y_test.argmax(dim=1) == y_train).float().mean().cpu().item()
+        print("acc train: ", acc_y_test)
+    return classifier
+def val(x_test, y_test, classifier):
+    preds_y_test = classifier(x_test)
+    acc_y_test = (preds_y_test.argmax(dim=1) == y_test).float().mean().cpu().item()
+    return acc_y_test
 def main():
-    data_file_path = "/home/lap13385/Projects/Week3_4_NLP/RNN_Classification/source/"
+    data_file_path = "/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week3_4_NLP/RNN_Classification/source/"
     corpus, y = read_data(data_file_path)
     x_process = pre_data(corpus, data_file_path)
     x_embeddings = word2vec_data(x_process, data_file_path)
     x = torch.tensor(x_embeddings)
     y = torch.tensor(y)
     x_train, y_train, x_val, y_val, x_test, y_test = split_data(x, y)
-    train(x_train, y_train)
+    classifier = train(x_train, y_train)
+    print("acc val: ",val(x_val, y_val, classifier))
+    print("acc test: ",val(x_test, y_test, classifier))
 
 if __name__ == "__main__":
     main()

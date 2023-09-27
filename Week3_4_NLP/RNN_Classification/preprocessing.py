@@ -18,6 +18,7 @@ class Prerpocessing:
     def remove_stopwords(self, tokens):
         tokens_new = [w for w in tokens if w not in self.stop_words or w != '']
         return tokens_new
+
     def preprocess_text(self, text):
         text = self.remove_punctuation(text)
         tokens = self.tokenize(text)

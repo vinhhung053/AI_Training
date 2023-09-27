@@ -1,6 +1,7 @@
 from gensim.models import KeyedVectors
 import numpy as np
 
+
 class Word2Vec:
     def __init__(self, data_file_path):
         # Load the Word2Vec model from the specified path
@@ -9,6 +10,7 @@ class Word2Vec:
         # Chuyển dấu _ thành dấu space trong từ điển
         self.model.index_to_key = [word.replace('_', ' ') for word in self.model.index_to_key]
         self.model.key_to_index = {word: idx for idx, word in enumerate(self.model.index_to_key)}
+
     def get_words(self):
         # Get the list of words in the model
         return self.model.index_to_key
@@ -16,6 +18,7 @@ class Word2Vec:
     def get_size(self):
         # Get the size of words in the model
         return len(self.model.key_to_index)
+
     def get_word_vector(self, word):
         # Get the vector representation for a specific word
         return self.model[word]
@@ -26,7 +29,6 @@ class Word2Vec:
 
     def add_words_to_word2vec(self, x):
         words_to_add = []
-
         for sentences in x:
             for word in sentences:
                 if word not in self.get_words() and word not in words_to_add:

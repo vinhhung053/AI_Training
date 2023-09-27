@@ -1,28 +1,35 @@
-from gensim.models import KeyedVectors
+# Import dependencies
+import torch
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.model_selection import train_test_split
 
-# Đường dẫn đến tệp mô hình Word2Vec đã tải về
-model_path = '/home/lap13385/Projects/Week3_4_NLP/RNN_Classification/baomoi.model.bin'
+# Set the hyperparameters for data creation
+NUM_CLASSES = 4
+NUM_FEATURES = 2
+RANDOM_SEED = 42
 
-# Tải mô hình Word2Vec
-model = KeyedVectors.load_word2vec_format(model_path, binary=True)
-if 'dây_cáp' in model.index_to_key:
-    print('hung')
-model.index_to_key = [word.replace('_', ' ') for word in model.index_to_key]
-model.key_to_index = [word.replace('_', ' ') for word in model.key_to_index]
-print(len(model.key_to_index))
-# print(model.key_to_index)
-if 'dây cáp' in model.index_to_key:
-    print('hung')
+# 1. Create multi-class data
+X_blob, y_blob = make_blobs(n_samples=1000,
+    n_features=NUM_FEATURES, # X features
+    centers=NUM_CLASSES, # y labels 
+    cluster_std=1.5, # give the clusters a little shake up (try changing this to 1.0, the default)
+    random_state=RANDOM_SEED
+)
 
-# print(model['dây_cáp'])
+# 2. Turn data into tensors
+X_blob = torch.from_numpy(X_blob).type(torch.float)
+y_blob = torch.from_numpy(y_blob).type(torch.LongTensor)
+print(X_blob[:5], y_blob[:5])
 
-# for word in model.index_to_key:
-#     print(word)
-# model.add_vector('dây cáp',[1]*400)
-# word_vector = model['dây cáp']
-# print(word_vector)
-# print(len(model.key_to_index))
+# 3. Split into train and test sets
+X_blob_train, X_blob_test, y_blob_train, y_blob_test = train_test_split(X_blob,
+    y_blob,
+    test_size=0.2,
+    random_state=RANDOM_SEED
+)
 
-# Tìm các từ tương tự
-# similar_words = model.most_similar('tiki training', topn=5)
-# print(similar_words)
+# 4. Plot data
+plt.figure(figsize=(10, 7))
+plt.scatter(X_blob[:, 0], X_blob[:, 1], c=y_blob, cmap=plt.cm.RdYlBu)
+plt.show()

@@ -27,8 +27,8 @@ def get_args():
                         help='vector size of word embedding')
 
     parser.add_argument('--top_k',
-                        type = int,
-                        default= 10000,
+                        type=int,
+                        default=10000,
                         help='number token used')
 
     parser.add_argument('--batch_size',
@@ -42,18 +42,24 @@ def get_args():
 
     parser.add_argument('--hidden_sz',
                         type=int,
-                        default= 300,
+                        default=300,
                         help='Hidden size in Attention')
 
     parser.add_argument('--num_block',
                         type=int,
-                        default= 2,
+                        default=2,
                         help='Num transformer block')
 
     parser.add_argument('--lr',
                         type=float,
-                        default= 0.01,
+                        default=0.01,
                         help='Num transformer block')
+
+    parser.add_argument('--epoch',
+                        type=int,
+                        default=2,
+                        help='Num epoch')
+
     args = parser.parse_args()
     return args
 
@@ -98,12 +104,16 @@ def main():
     x_train, y_train, x_test, y_test = split_data(embedding_list, y)
 
     train_loader = Dataloader(x_train, y_train, batch_size=args.batch_size, shuffle=args.shuffle)
+    test_loader = Dataloader(x_test, y_test, batch_size=args.batch_size, shuffle=args.shuffle)
+
     classifier = GPT2(input_sz=x_train.shape[-1], hidden_sz=args.hidden_sz, vocab_size=len(token2id), num_block=args.num_block)
     optimizer = optim.Adam(classifier.parameters(), lr=args.lr)  # 0.002 dives 85% acc
     criterion = nn.CrossEntropyLoss()
 
-    trainer = Trainer(classifier, optimizer, criterion)
+    trainer = Trainer(classifier, optimizer, criterion, args.epoch)
     trainer.train(train_loader)
+    trainer.val(test_loader)
+
 
 if __name__ == '__main__':
     main()

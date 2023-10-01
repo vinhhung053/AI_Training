@@ -69,9 +69,7 @@ class Multi_attention(nn.Module):
         return output_multi_attention
 
 
-
-
-class GPT2(nn.Module):
+class GPT2Block(nn.Module):
     def __init__(self, input_sz: int, hidden_sz:int, vocab_size:int):
         super().__init__()
         self.input_sz = input_sz
@@ -79,12 +77,52 @@ class GPT2(nn.Module):
 
         self.layer_norm1 = nn.LayerNorm(input_sz)
         self.layer_norm2 = nn.LayerNorm(input_sz)
+
+        # Linear function
+        self.linear3 = nn.Linear(input_sz, hidden_sz)
+        self.linear4 = nn.Linear(hidden_sz, input_sz)
+
+        self.init_weights()
+    def init_weights(self):
+        stdv = 1.0 / math.sqrt(self.hidden_sz)
+        for weight in self.parameters():
+            weight.data.uniform_(-stdv, stdv)
+
+
+    def gelu(self, x):
+        return 0.5 * x * (1.0 + torch.tanh(math.sqrt(2.0 / math.pi) * (x + 0.044715 * torch.pow(x, 3.0))))
+
+    def forward(self, x, init_states = None):
+        "x.shape = (seq_sz, len_vector)"
+        seq_sz, len_vec = x.size()
+        save1_x = x
+        x = self.layer_norm1(x)
+        multi_attention = Multi_attention(len_vec, 300, 5)
+        x = multi_attention(x)
+        x = self.layer_norm2(x + save1_x) # [seq_sz, len_vec]
+        save2_x = x # [seq_sz, len_vec]
+        x = self.linear3(x)
+        x = self.gelu(x)
+        x = self.linear4(x) + save2_x # Output transformer block [seq_sz, len_vec]
+
+        return x
+
+
+
+
+class GPT2(nn.Module):
+    def __init__(self, input_sz: int, hidden_sz:int, vocab_size:int, num_block: int):
+        super().__init__()
+        self.input_sz = input_sz
+        self.hidden_sz = hidden_sz
+
         self.layer_norm3 = nn.LayerNorm(input_sz)
 
         # Linear function
-        self.linear3 = nn.Linear(input_sz, 4*input_sz)
-        self.linear4 = nn.Linear(4*input_sz, input_sz)
+
         self.linear5 = nn.Linear(input_sz, vocab_size)  # Input (seq_sz, len_vec) -> Output: (seq_sz, vocab_size)
+
+        self.gpt2block = nn.ModuleList([GPT2Block(input_sz,input_sz*4,vocab_size) for _ in range(num_block)])
 
         self.init_weights()
     def init_weights(self):
@@ -110,23 +148,13 @@ class GPT2(nn.Module):
         softmax_x = exp_x / sum_exp_x
         return softmax_x
 
-    def gelu(self, x):
-        return 0.5 * x * (1.0 + torch.tanh(math.sqrt(2.0 / math.pi) * (x + 0.044715 * torch.pow(x, 3.0))))
-
     def forward(self, x, init_states = None):
         "x.shape = (seq_sz, len_vector)"
         seq_sz, len_vec = x.size()
         x = x + self.positional_encoding(x)
-        save1_x = x
-        x = self.layer_norm1(x)
-        multi_attention = Multi_attention(len_vec, 300, 5)
-        x = multi_attention(x)
-        x = self.layer_norm2(x + save1_x) # [seq_sz, len_vec]
-        save2_x = x # [seq_sz, len_vec]
-        x = self.linear3(x)
-        x = self.gelu(x)
-        x = self.linear4(x) + save2_x # Output transformer block [seq_sz, len_vec]
 
+        for gpt2block in self.gpt2block:
+            x = gpt2block(x)
         out = self.layer_norm3(x)
-        out = self.linear5(x) # out [seq_sz, vocab_size]
+        out = self.linear5(out) # out [seq_sz, vocab_size]
         return out

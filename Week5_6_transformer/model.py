@@ -14,7 +14,7 @@ class Attention(nn.Module):
         self.W_k = nn.Parameter(torch.Tensor(input_sz, hidden_sz))
         self.W_v = nn.Parameter(torch.Tensor(input_sz, hidden_sz))
 
-        self.linear1 = nn.Linear(input_sz, input_sz)  # Input (seq_sz, len_vec) -> Output: (seq_sz, len_vec)
+        self.inp_linear_self_attention = nn.Linear(input_sz, input_sz)  # Input (seq_sz, len_vec) -> Output: (seq_sz, len_vec)
 
         self.init_weights()
 
@@ -32,7 +32,7 @@ class Attention(nn.Module):
     def forward(self, x):
         "x.shape = (seq_sz, len_vector)"
         seq_sz, len_vec = x.size()
-        x_ = self.linear1(x)
+        x_ = self.inp_linear_self_attention(x)
         # Matmul
         Q = x_ @ self.W_q  # Q shape [seq_sz, hidden)
         K = x_ @ self.W_k  # Q shape [seq_sz, hidden)
@@ -57,7 +57,7 @@ class Multi_attention(nn.Module):
         self.hidden_sz = hidden_sz
         self.num_heads = num_heads
 
-        self.linear = nn.Linear(self.num_heads * self.hidden_sz, self.input_sz)
+        self.out_linear_self_attention_layer = nn.Linear(self.num_heads * self.hidden_sz, self.input_sz)
         # Create multi attention
         self.attention_heads = nn.ModuleList([Attention(input_sz,hidden_sz) for _ in range(num_heads)])
 
@@ -65,8 +65,8 @@ class Multi_attention(nn.Module):
         head_outputs = [head(x) for head in self.attention_heads]
 
         multi_head_output = torch.cat(head_outputs, dim = -1)
-        output_multi_attention = self.linear(multi_head_output)
-        return output_multi_attention
+        output_multi_self_attention = self.out_linear_self_attention_layer(multi_head_output)
+        return output_multi_self_attention
 
 
 class GPT2Block(nn.Module):
@@ -75,12 +75,12 @@ class GPT2Block(nn.Module):
         self.input_sz = input_sz
         self.hidden_sz = hidden_sz
 
-        self.layer_norm1 = nn.LayerNorm(input_sz)
-        self.layer_norm2 = nn.LayerNorm(input_sz)
+        self.PE_layer_norm = nn.LayerNorm(input_sz)
+        self.layer_norm_transformer_block = nn.LayerNorm(input_sz)
 
         # Linear function
-        self.linear3 = nn.Linear(input_sz, hidden_sz)
-        self.linear4 = nn.Linear(hidden_sz, input_sz)
+        self.linear_before_gelu = nn.Linear(input_sz, hidden_sz)
+        self.linear_after_gelu = nn.Linear(hidden_sz, input_sz)
 
         self.init_weights()
     def init_weights(self):
@@ -96,18 +96,16 @@ class GPT2Block(nn.Module):
         "x.shape = (seq_sz, len_vector)"
         seq_sz, len_vec = x.size()
         save1_x = x
-        x = self.layer_norm1(x)
+        x = self.PE_layer_norm(x)
         multi_attention = Multi_attention(len_vec, 300, 5)
         x = multi_attention(x)
-        x = self.layer_norm2(x + save1_x) # [seq_sz, len_vec]
+        x = self.layer_norm_transformer_block(x + save1_x) # [seq_sz, len_vec]
         save2_x = x # [seq_sz, len_vec]
-        x = self.linear3(x)
+        x = self.linear_before_gelu(x)
         x = self.gelu(x)
-        x = self.linear4(x) + save2_x # Output transformer block [seq_sz, len_vec]
+        x = self.linear_after_gelu(x) + save2_x # Output transformer block [seq_sz, len_vec]
 
         return x
-
-
 
 
 class GPT2(nn.Module):
@@ -116,11 +114,11 @@ class GPT2(nn.Module):
         self.input_sz = input_sz
         self.hidden_sz = hidden_sz
 
-        self.layer_norm3 = nn.LayerNorm(input_sz)
+        self.target_layer_norm = nn.LayerNorm(input_sz)
 
         # Linear function
 
-        self.linear5 = nn.Linear(input_sz, vocab_size)  # Input (seq_sz, len_vec) -> Output: (seq_sz, vocab_size)
+        self.target_linear = nn.Linear(input_sz, vocab_size)  # Input (seq_sz, len_vec) -> Output: (seq_sz, vocab_size)
 
         self.gpt2block = nn.ModuleList([GPT2Block(input_sz,input_sz*4,vocab_size) for _ in range(num_block)])
 
@@ -155,6 +153,6 @@ class GPT2(nn.Module):
 
         for gpt2block in self.gpt2block:
             x = gpt2block(x)
-        out = self.layer_norm3(x)
-        out = self.linear5(out) # out [seq_sz, vocab_size]
+        out = self.target_layer_norm(x)
+        out = self.target_linear(out) # out [seq_sz, vocab_size]
         return out

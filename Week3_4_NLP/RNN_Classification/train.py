@@ -115,6 +115,8 @@ def train(x_train, y_train, x_val, y_val, path):
                 'acc': acc_y_val,
             }, path)
             torch.save(best_model,'best_model2.pth')
+    m = torch.jit.script(classifier)
+    m.save("test.pt")
     return classifier
 
 
@@ -139,6 +141,8 @@ def main():
     print("acc train final: ", eva(x_train, y_train))
     print("acc val: ", eva(x_val, y_val))
     print("acc test: ", eva(x_test, y_test))
+
+
 
 
 if __name__ == "__main__":

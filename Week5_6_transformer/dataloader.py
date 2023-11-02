@@ -26,8 +26,10 @@ class Dataloader:
 
     def __next__(self):
         if self.current_id + self.batch_size > self.num_samples:
-            # raise StopIteration  # ket thuc vong lap
             self.current_id = 0
+            np.random.shuffle(self.indices)
+            raise StopIteration  # ket thuc vong lap
+
         batch_indices = self.indices[self.current_id: self.current_id + self.batch_size]
         x_batch = self.x_data[batch_indices]
         y_batch = self.y_data[batch_indices]

@@ -1,5 +1,5 @@
 import numpy as np
-
+import torch
 
 def binary_cross_entropy(y_predict, y):
 
@@ -21,14 +21,11 @@ def positive_negative(y_predict, y):
             true_neg = true_neg + 1
     print("  true_pos / number sample: ", true_pos,"/",y.shape[0])
     print("  true_neg / number sample: ", true_neg,"/",y.shape[0])
-<<<<<<< HEAD
     print(sum(y_predict == y)/y.shape[0])
-=======
-
->>>>>>> 354c9a58b5b9a26b410c9d7da3b0b3c15f4d17cb
 
 def evaluate_model(x, y, model,type_evaluate):
-    y_predict = model.predict(x)
+    x = torch.FloatTensor(x.values)
+    y_predict = model.forward(x)
 
     if(type_evaluate == "binary_cross_entropy"):
         binary_cross_entropy(y_predict, y)

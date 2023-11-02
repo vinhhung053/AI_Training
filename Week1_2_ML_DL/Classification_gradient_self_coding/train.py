@@ -1,3 +1,5 @@
+import torch.jit
+import numpy as np
 from config import get_args
 from model import *
 import pandas as pd
@@ -24,11 +26,11 @@ def main():
     x = pd.DataFrame(x)
     x_train, x_temp, y_train, y_temp = train_test_split(x, y, test_size=0.4, random_state=40)
     x_val, x_test, y_val, y_test = train_test_split(x_temp, y_temp, test_size=0.5, random_state=40)
-
     #Khoi tao dataloader
     data_loader = Data_loader(x_train, y_train,batch_size=args.batch_size, shuffle=args.shuffle)
-    model_gd = Gradient_descent(max_iter=args.max_iter, learning_rate=args.learning_rate)
-    model_gd.fit(data_loader)
+    model_gd = GradientDescent(num_features=data_loader.get_num_feature())
+    # model_gd.eval()
+    model_gd.fit(data_loader, args.max_iter, args.learning_rate)
     print("---------------------------------------------------------")
     print("Predict validation:")
     evaluate_model(x_val, y_val, model_gd,type_evaluate=args.type_evaluate)
@@ -36,6 +38,8 @@ def main():
     evaluate_model(x_test, y_test, model_gd,type_evaluate=args.type_evaluate)
     print("---------------------------------------------------------")
 
+    sm = torch.jit.script(model_gd)
+    sm.save("traced_classification_gradient_self_coding.pt")
 
 if __name__ == "__main__":
     main()

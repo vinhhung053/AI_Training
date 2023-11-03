@@ -11,9 +11,9 @@ class Trainer:
 
     def update_lr(self):
         for param_group in self.optimizer.param_groups:
-                param_group['lr'] *= 0.95
+                param_group['lr'] *= 0.99
 
-    def train(self, train_loader):
+    def train(self, train_loader, args):
         epoch_bar = tqdm(range(self.epoch),
                          desc="Training",
                          position=0,)
@@ -23,9 +23,10 @@ class Trainer:
                              position=1)
             for i, (x_batch, y_batch) in batch_bar:
                 self.optimizer.zero_grad()
-                preds = [self.model(x, torch.zeros((1, 1)))[0] for x in x_batch]
-                preds = torch.stack(preds)
-                preds = preds.view(-1,preds.shape[-1])
+                preds = self.model(x_batch, torch.zeros((1, 1)))[0]
+                # print(preds)
+                # preds = torch.stack(preds)
+                preds = preds.view(-1, preds.shape[-1])
                 for id in range(y_batch.shape[0]):
                     y_batch[id] = torch.cat((y_batch[id][1:], torch.tensor([2])))
                 y_batch = y_batch.view(-1)
@@ -38,6 +39,7 @@ class Trainer:
                 batch_bar.update()
                 # print(self.model(torch.tensor([59, 49, 39, 29])))
             self.update_lr()  # cap nhat lr
+            torch.save(self.model, args.pre_model_path)
 
     def val(self, test_loader):
         batch_bar = tqdm(enumerate(test_loader),

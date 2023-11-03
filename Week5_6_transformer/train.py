@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import pandas as pd
 import argparse
-
+import time
 import preprocess
 from preprocess import Prerpocessing
 from tokenizer import Tokenizer
@@ -20,11 +20,11 @@ def get_args():
                         default="source/commonlitreadabilityprize/train.csv",
                         help='data train path')
     parser.add_argument('--pre_model_path',
-                        default="pre_model/pre_train_model3.pth",
+                        default="pre_model/pre_train_model5.pth",
                         help='pre model path')
 
     parser.add_argument('--pre_tokenizer_path',
-                        default="pre_tokenizer/pre_train_tokenizer3.pkl",
+                        default="pre_tokenizer/pre_train_tokenizer5.pkl",
                         help='pre tokenizer path')
     parser.add_argument('--test_path',
                         default="commonlitreadabilityprize/train.csv",
@@ -32,7 +32,7 @@ def get_args():
 
     parser.add_argument('--vector_size',
                         type=int,
-                        default=512,#1028
+                        default=128,#1028
                         help='vector size of word embedding')
 
     parser.add_argument('--max_len',
@@ -47,7 +47,7 @@ def get_args():
 
     parser.add_argument('--batch_size',
                         type=int,
-                        default=8,#8
+                        default=10,#8
                         help='Batch size data')
     parser.add_argument('--shuffle',
                         type=bool,
@@ -71,7 +71,7 @@ def get_args():
 
     parser.add_argument('--epoch',
                         type=int,
-                        default=60,
+                        default=100,
                         help='Num epoch')
 
     parser.add_argument('--num_head',
@@ -93,6 +93,7 @@ def split_data(x, y):
 
 
 def main():
+    t1 = time.time()
     print("Start prepare for training ...")
     args = get_args()
 
@@ -131,12 +132,14 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     criterion = nn.CrossEntropyLoss()
     trainer = Trainer(model, optimizer, criterion, args.epoch)
-    trainer.train(train_loader)
+    trainer.train(train_loader, args)
     trainer.val(test_loader)
     torch.save(model, args.pre_model_path)
     model.eval()
     # m = torch.jit.script(model)
     # m.save("m.pt")
+    t2 = time.time()
+    print('Elapsed time: {} seconds'.format((t2 - t1)))
 
 
 if __name__ == '__main__':

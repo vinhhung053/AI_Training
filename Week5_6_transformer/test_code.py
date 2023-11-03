@@ -1,4 +1,2 @@
-A = [1, 2, 3]
-
-B = [x for x in A]
-print(B)
+kv_caches = [[None] * 3] * 2
+print(kv_caches[0][0] != None)

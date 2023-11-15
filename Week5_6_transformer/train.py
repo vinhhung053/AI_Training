@@ -17,7 +17,7 @@ from trainer import Trainer
 def get_args():
     parser = argparse.ArgumentParser(description='training GPT2')
     parser.add_argument('--train_path',
-                        default="source/commonlitreadabilityprize/train.csv",
+                        default="source/train.csv",
                         help='data train path')
     parser.add_argument('--pre_model_path',
                         default="pre_model/pre_train_model5.pth",
@@ -47,7 +47,7 @@ def get_args():
 
     parser.add_argument('--batch_size',
                         type=int,
-                        default=10,#8
+                        default=8,#8
                         help='Batch size data')
     parser.add_argument('--shuffle',
                         type=bool,
@@ -71,7 +71,7 @@ def get_args():
 
     parser.add_argument('--epoch',
                         type=int,
-                        default=100,
+                        default=5,
                         help='Num epoch')
 
     parser.add_argument('--num_head',
@@ -136,8 +136,8 @@ def main():
     trainer.val(test_loader)
     torch.save(model, args.pre_model_path)
     model.eval()
-    # m = torch.jit.script(model)
-    # m.save("m.pt")
+    m = torch.jit.script(model)
+    m.save("m.pt")
     t2 = time.time()
     print('Elapsed time: {} seconds'.format((t2 - t1)))
 

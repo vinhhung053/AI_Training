@@ -1,9 +1,10 @@
 import math
 import torch
 import torch.nn as nn
-
+from typing import List
 
 class Attention(nn.Module):
+
     def __init__(self, input_sz: int, hidden_sz: int):
         super().__init__()
         self.input_sz = input_sz
@@ -15,7 +16,7 @@ class Attention(nn.Module):
 
         self.inp_linear_self_attention = nn.Linear(input_sz, input_sz)  # Input (seq_sz, len_vec) -> Output: (seq_sz, len_vec)
 
-    def forward(self, x_batch, kv_cache=None):
+    def forward(self, x_batch, kv_cache):
         "x.shape = (batch_size, seq_sz, len_vector)"
         _, seq_sz, len_vec = x_batch.size()
         x_batch_ = self.inp_linear_self_attention(x_batch)
@@ -23,8 +24,8 @@ class Attention(nn.Module):
         Q = x_batch_.matmul(self.W_q)  # Q shape [seq_sz, hidden)
         K = x_batch_.matmul(self.W_k)  # Q shape [seq_sz, hidden)
         V = x_batch_.matmul(self.W_v)   # Q shape [seq_sz, hidden)
-        if kv_cache:
-            # print(kv_cache)
+        if kv_cache.shape != torch.empty((2)).shape:
+            print(kv_cache)
             old_k = kv_cache[0]
             old_v = kv_cache[1]
             # print(old_k.shape)
@@ -35,18 +36,17 @@ class Attention(nn.Module):
             V = new_v
         # print(K, V)
         current_cache = [K,V]
+        current_cache = torch.stack(current_cache)
         K_T = K.transpose(1,2)
         I = Q.matmul(K_T)  # I shape [seq_sz, seq_sz]
         # Attention Mask
-        if kv_cache:
+        if kv_cache.shape != torch.empty((2)).shape:
             mask = torch.zeros((1, K.shape[0]))
         else:
             mask = torch.triu(torch.ones(seq_sz, seq_sz, dtype=torch.bool), diagonal=1)
             I[:,mask] = float('-inf')
         F = torch.matmul(torch.nn.functional.softmax(I, dim=-1), V)  # [seq_sz, hidden]
-
         return F, current_cache # [K,V]
-
 
 class MultiAttention(nn.Module):
     def __init__(self, input_sz: int, hidden_sz: int, num_heads: int):  # (len_vec , hidden, num head)
@@ -61,12 +61,12 @@ class MultiAttention(nn.Module):
         self.attention_heads = nn.ModuleList([Attention(input_sz, hidden_sz) for _ in range(num_heads)])
 
     def forward(self, x_batch, kv_caches):
-        output_attention_heads = [(head(x_batch, kv_caches[index])) for index, head in enumerate(self.attention_heads)]
-        head_outputs = [head for head, _ in output_attention_heads]
-        kv_caches = [kv_cache for _, kv_cache in output_attention_heads]
+        # output_attention_heads = [(head(x_batch, kv_caches[index])) for index, head in enumerate(self.attention_heads)]
+        head_outputs = [(head(x_batch, kv_caches[index]))[0] for index, head in enumerate(self.attention_heads)]
+        kv_caches = [(head(x_batch, kv_caches[index]))[1] for index, head in enumerate(self.attention_heads)]
+        kv_caches = torch.stack(kv_caches)
         multi_head_output = torch.cat(head_outputs, dim=-1)
         output_multi_self_attention = self.out_linear_self_attention_layer(multi_head_output)
-        # print(kv_caches)
         return output_multi_self_attention, kv_caches # [[K,V] [K,V] ... ]]
 
 
@@ -89,11 +89,11 @@ class GPT2Block(nn.Module):
     def gelu(self, x):
         return 0.5 * x * (1.0 + torch.tanh(math.sqrt(2.0 / math.pi) * (x + 0.044715 * torch.pow(x, 3.0))))
 
-    def forward(self, x_batch, kv_caches=None):
+    def forward(self, x_batch, kv_cache):
         "x.shape = (seq_sz, len_vector)"
         residual = x_batch
         x_batch = self.PE_layer_norm(x_batch)
-        x_batch, kv_caches_updated = self.multi_attentions(x_batch, kv_caches)
+        x_batch, kv_caches_updated = self.multi_attentions(x_batch, kv_cache)
         x_batch = (x_batch + residual)  # [seq_sz, len_vec]
         residual = x_batch  # [seq_sz, len_vec]
         x_batch = self.linear_before_gelu(x_batch)
@@ -121,17 +121,16 @@ class GPT2(nn.Module):
         for weight in self.parameters():
             weight.data.uniform_(-stdv, stdv)
 
-    def positional_encoding(self, x, current_len=-1, kv_caches = None):
+    def positional_encoding(self, x, current_len, kv_caches):
         seq_sz, len_vec = x.size()
         encoding = torch.zeros(seq_sz, len_vec)  # Tạo tensor mới để lưu trữ kết quả
-
-        if kv_caches[0][0] != None:
+        if kv_caches.shape != torch.empty((self.num_block,self.num_head,2)).shape:
             encoding = torch.zeros(1, len_vec)
             for i in range(len_vec):
                 if i % 2 == 0:
-                    encoding[0][i] = math.sin(current_len / (10000 ** (i / len_vec)))
+                    encoding[0][i] = math.sin(current_len.item() / (10000 ** (i / len_vec)))
                 else:
-                    encoding[0][i] = math.cos(current_len / (10000 ** (i / len_vec)))
+                    encoding[0][i] = math.cos(current_len.item() / (10000 ** (i / len_vec)))
         else:
             for pos in range(seq_sz):
                 for i in range(len_vec):
@@ -141,10 +140,10 @@ class GPT2(nn.Module):
                         encoding[pos][i] = math.cos(pos / (10000 ** (i / len_vec)))
         return encoding
 
-    def forward(self, x_batch, kv_caches=None):
-        current_len = x_batch.shape[1] - 2
-        if not kv_caches:
-            kv_caches = [[None] * self.num_head] * self.num_block
+    def forward(self, x_batch, kv_caches):
+        current_len = torch.tensor(x_batch.shape[1] - 2)
+        if kv_caches.shape == torch.empty((1)).shape:
+            kv_caches = torch.empty((self.num_block,self.num_head,2))
         else:
             current_len = current_len + 1
             x_batch = x_batch[:, -1]
@@ -154,9 +153,11 @@ class GPT2(nn.Module):
         for index in range(x_batch.shape[0]):
             x_batch[index] = x_batch[index] + self.positional_encoding(x_batch[index], current_len, kv_caches)
         new_kv_caches = []
-        for gpt2block, kv_cache_block in zip(self.gpt2block, kv_caches):
-            x_batch, updated_cache = gpt2block(x_batch, kv_cache_block)
+        for index, gpt2block in enumerate(self.gpt2block):
+            x_batch, updated_cache = gpt2block(x_batch, kv_caches[index])
             new_kv_caches.append(updated_cache)
+
+        new_kv_caches = torch.stack(new_kv_caches)
         out = self.target_layer_norm(x_batch)
         out = self.target_linear(out)  # out [seq_sz, vocab_size]
         return out, new_kv_caches

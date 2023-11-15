@@ -78,12 +78,13 @@ def generator_use_kv(list_token_ids, generator, kv_cache, args):
     return list_token_ids
 
 
+
 def main():
     t1 = time.time()
     args = get_args()
     generator = Generator(args)
     # sentences = ["when the young people", "all", "he is my"]
-    sentences = ["when the young people"]
+    sentences = ["when the young people", "my name", "i am"]
     # sentences = ["i am mr hung me"]
     list_token_ids = []
     max_len_sentence = 0
@@ -96,7 +97,7 @@ def main():
     for i in range(len(list_token_ids)):
         start[i] = (max_len_sentence - len(list_token_ids[i]))
         list_token_ids[i] = [2] * (max_len_sentence - len(list_token_ids[i])) + list_token_ids[i]
-    kv_cache = None
+    kv_cache = torch.zeros(1)
     list_token_ids = torch.tensor(list_token_ids, dtype=torch.long)
 
     print("------------------no use kv cache-------------------------------------------")

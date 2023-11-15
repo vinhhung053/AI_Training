@@ -16,14 +16,14 @@ class Trainer:
     def train(self, train_loader, args):
         epoch_bar = tqdm(range(self.epoch),
                          desc="Training",
-                         position=0,)
+                         position=0)
         for epoch in epoch_bar:
             batch_bar = tqdm(enumerate(train_loader),
                              desc="Epoch: {}".format(str(epoch)),
                              position=1)
             for i, (x_batch, y_batch) in batch_bar:
                 self.optimizer.zero_grad()
-                preds = self.model(x_batch, torch.zeros((1, 1)))[0]
+                preds = self.model(x_batch, torch.empty((1)))[0]
                 # print(preds)
                 # preds = torch.stack(preds)
                 preds = preds.view(-1, preds.shape[-1])

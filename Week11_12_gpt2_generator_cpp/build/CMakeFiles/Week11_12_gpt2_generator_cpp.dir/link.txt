@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o  -o Week11_12_gpt2_generator_cpp  -lpthread 

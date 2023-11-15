@@ -25,7 +25,6 @@ class Attention(nn.Module):
         K = x_batch_.matmul(self.W_k)  # Q shape [seq_sz, hidden)
         V = x_batch_.matmul(self.W_v)   # Q shape [seq_sz, hidden)
         if kv_cache.shape != torch.empty((2)).shape:
-            print(kv_cache)
             old_k = kv_cache[0]
             old_v = kv_cache[1]
             # print(old_k.shape)

@@ -71,7 +71,7 @@ def get_args():
 
     parser.add_argument('--epoch',
                         type=int,
-                        default=5,
+                        default=50,
                         help='Num epoch')
 
     parser.add_argument('--num_head',

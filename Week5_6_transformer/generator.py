@@ -56,7 +56,7 @@ class Generator:
 
 def generator_no_use_kv(list_token_ids, generator, kv_cache, args):
     for i in range(args.max_new_tokens):
-        kv_cache = None
+        kv_cache = torch.empty((1))
         next_token_prob, kv_cache = generator.get_next_token_prob(list_token_ids, kv_cache)
         top1 = generator.get_top1(next_token_prob)
         new_value = top1[:, list_token_ids.shape[1] - 1]
@@ -97,7 +97,7 @@ def main():
     for i in range(len(list_token_ids)):
         start[i] = (max_len_sentence - len(list_token_ids[i]))
         list_token_ids[i] = [2] * (max_len_sentence - len(list_token_ids[i])) + list_token_ids[i]
-    kv_cache = torch.zeros(1)
+    kv_cache = torch.empty((1))
     list_token_ids = torch.tensor(list_token_ids, dtype=torch.long)
 
     print("------------------no use kv cache-------------------------------------------")

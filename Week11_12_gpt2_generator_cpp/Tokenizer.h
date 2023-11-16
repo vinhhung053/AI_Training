@@ -14,11 +14,11 @@ public:
 
     Tokenizer();
 
-    void read_tokenizer();
+    void read_tokenizer() const;
 
-    int encode(std::string word);
+    int encode(const std::string& word);
 
-//    std::string decode(int id);
+    std::string decode(int id) const;
 };
 
 #endif //WEEK11_12_GPT2_GENERATOR_CPP_TOKENIZER_H

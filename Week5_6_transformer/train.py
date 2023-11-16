@@ -71,7 +71,7 @@ def get_args():
 
     parser.add_argument('--epoch',
                         type=int,
-                        default=50,
+                        default=70,
                         help='Num epoch')
 
     parser.add_argument('--num_head',
@@ -137,7 +137,7 @@ def main():
     torch.save(model, args.pre_model_path)
     model.eval()
     m = torch.jit.script(model)
-    m.save("m.pt")
+    m.save("m1.pt")
     t2 = time.time()
     print('Elapsed time: {} seconds'.format((t2 - t1)))
 

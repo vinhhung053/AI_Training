@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.13)
 project(Week11_12_gpt2_generator_cpp)
 
 set(CMAKE_PREFIX_PATH "/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
 find_package(Torch REQUIRED)
-find_package(Crow REQUIRED)
+find_package(Crow)
 
 if (Torch_FOUND)
     message(STATUS "Torch library found")
@@ -18,7 +21,7 @@ else()
 endif()
 
 
-set(CMAKE_CXX_STANDARD 17)
+
 
 add_executable(Week11_12_gpt2_generator_cpp main.cpp
         Header.h

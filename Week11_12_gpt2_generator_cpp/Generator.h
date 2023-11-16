@@ -9,10 +9,10 @@
 #include "Tokenizer.h"
 
 class Generator {
-private:
-    std::unique_ptr<torch::jit::script::Module> model = std::make_unique<torch::jit::script::Module>();
-    std::unique_ptr<Tokenizer> tokenizer = std::make_unique<Tokenizer>();
 public:
+    std::unique_ptr<torch::jit::script::Module> model = nullptr;
+    std::unique_ptr<Tokenizer> tokenizer = std::make_unique<Tokenizer>();
+
     Generator();
 
     void init();

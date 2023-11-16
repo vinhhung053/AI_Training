@@ -52,7 +52,7 @@ build cmake_object_order_depends_target_Week11_12_gpt2_generator_cpp: phony || C
 build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o: CXX_COMPILER__Week11_12_gpt2_generator_cpp_unscanned_Debug /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/main.cpp || cmake_object_order_depends_target_Week11_12_gpt2_generator_cpp
   DEFINES = -DASIO_STANDALONE -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -D_CROW_ICD-NOTFOUND
   DEP_FILE = CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
+  FLAGS = -std=c++17 -g -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
   INCLUDES = -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include/torch/csrc/api/include
   OBJECT_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
@@ -60,7 +60,7 @@ build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o: CXX_COMPILER__Week
 build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Tokenizer.cpp.o: CXX_COMPILER__Week11_12_gpt2_generator_cpp_unscanned_Debug /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/Tokenizer.cpp || cmake_object_order_depends_target_Week11_12_gpt2_generator_cpp
   DEFINES = -DASIO_STANDALONE -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -D_CROW_ICD-NOTFOUND
   DEP_FILE = CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Tokenizer.cpp.o.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
+  FLAGS = -std=c++17 -g -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
   INCLUDES = -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include/torch/csrc/api/include
   OBJECT_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
@@ -68,7 +68,7 @@ build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Tokenizer.cpp.o: CXX_COMPILER_
 build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Generator.cpp.o: CXX_COMPILER__Week11_12_gpt2_generator_cpp_unscanned_Debug /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/Generator.cpp || cmake_object_order_depends_target_Week11_12_gpt2_generator_cpp
   DEFINES = -DASIO_STANDALONE -DUSE_C10D_GLOO -DUSE_DISTRIBUTED -DUSE_RPC -DUSE_TENSORPIPE -D_CROW_ICD-NOTFOUND
   DEP_FILE = CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Generator.cpp.o.d
-  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
+  FLAGS = -std=c++17 -g -fdiagnostics-color=always -D_GLIBCXX_USE_CXX11_ABI=0
   INCLUDES = -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include -isystem /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/include/torch/csrc/api/include
   OBJECT_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
   OBJECT_FILE_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir
@@ -82,7 +82,7 @@ build CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Generator.cpp.o: CXX_COMPILER_
 # Link the executable Week11_12_gpt2_generator_cpp
 
 build Week11_12_gpt2_generator_cpp: CXX_EXECUTABLE_LINKER__Week11_12_gpt2_generator_cpp_Debug CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Tokenizer.cpp.o CMakeFiles/Week11_12_gpt2_generator_cpp.dir/Generator.cpp.o | /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libtorch.so /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libc10.so /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libkineto.a /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libc10.so
-  FLAGS = -g
+  FLAGS = -std=c++17 -g
   LINK_LIBRARIES = -Wl,-rpath,/lib/intel64:/lib/intel64_win:/lib/win-x64:/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib  /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libtorch.so  /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libc10.so  /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libkineto.a  -lpthread  -Wl,--no-as-needed,"/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libtorch_cpu.so" -Wl,--as-needed  /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libc10.so  -Wl,--no-as-needed,"/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch/lib/libtorch.so" -Wl,--as-needed
   LINK_PATH = -L/lib/intel64   -L/lib/intel64_win   -L/lib/win-x64
   OBJECT_DIR = CMakeFiles/Week11_12_gpt2_generator_cpp.dir

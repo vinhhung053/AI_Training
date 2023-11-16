@@ -10,5 +10,7 @@
 #include <memory>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
+#include <sstream>
 
 #endif //WEEK11_12_GPT2_GENERATOR_CPP_HEADER_H

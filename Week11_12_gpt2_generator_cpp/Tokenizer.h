@@ -18,7 +18,7 @@ public:
 
     int encode(std::string word);
 
-    std::string decode(int id);
+//    std::string decode(int id);
 };
 
 #endif //WEEK11_12_GPT2_GENERATOR_CPP_TOKENIZER_H

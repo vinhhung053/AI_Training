@@ -1,4 +1,6 @@
 /snap/clion/250/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/250/bin/ninja/linux/x64/ninja -G Ninja -S /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp -B /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/cmake-build-debug
+-- Torch library found
+-- Crow library found
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/cmake-build-debug

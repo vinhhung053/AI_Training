@@ -11,9 +11,9 @@ void Tokenizer::read_tokenizer() {
     std::string st;
     int x;
     while (std::cin >> st >> x) {
-//        std::cout << st << " " << x << std::endl;
         token2id->insert({st, x});
         id2token->insert({x, st});
+        std::cout << st << " " << x << std::endl;
     }
     fclose(stdin);
 }
@@ -22,6 +22,6 @@ int Tokenizer::encode(std::string word) {
         return 2;
     return (*(this->token2id))[word];
 }
-std::string Tokenizer::decode(int id) {
-    return (*id2token)[id];
-}
+//std::string Tokenizer::decode(int id) {
+//    return (*id2token)[id];
+//}

@@ -1,46 +1,53 @@
-#include <iostream>
+
+#include "Tokenizer.h"
 #include "Header.h"
+#include <sstream>
+std::vector<std::string> generator_greedy_search(std::vector<std::string> input_vec_string, crow::json::rvalue use_kv_cache, crow::json::rvalue max_length_output) {
+    std::unique_ptr<Tokenizer> tokenizer = std::make_unique<Tokenizer>();
+    tokenizer->read_tokenizer();
+    const std::string model_path = "/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/model_pre_train/m.pt";
+    torch::jit::script::Module model = torch::jit::load(model_path);
+    std::vector<int> vec_input_tokens;
+    int max_length_input = 4;
+    for (int i = 0; i < input_vec_string.size(); i++) {
+        std::string string_input = input_vec_string[i];
+        std::istringstream iss (string_input);
+        std::string word;
+        while(iss >> string_input)
+        {
+            std::cout << tokenizer->encode(string_input) << std::endl;
+            vec_input_tokens.push_back(tokenizer->encode(string_input));
+        }
+    }
+    torch::Tensor kv_cache = torch::empty({1});
+    std::cout << kv_cache << std::endl;
+    torch::Tensor myTensor = torch::from_blob(vec_input_tokens.data(), {input_vec_string.size(), max_length_input}, torch::kInt);
+    auto outputs = model.forward({myTensor, kv_cache}).toTuple();
+    torch::Tensor out1 = outputs->elements()[0].toTensor();
+    torch::Tensor out2 = outputs->elements()[1].toTensor();
+    std::cout << out1 << " " << out2 << std::endl;
 
-
-
+}
 
 void handleGeneratorRequest(const crow::request& req, crow::response& res, crow::json::rvalue input, crow::json::rvalue use_kv_cache, crow::json::rvalue max_length_output) {
-    std::vector<std::string> vec_input;
+    std::vector<std::string> input_vec_string;
+    crow::json::wvalue response_data;
     int max_length_input = 0;
     for(auto data : input) {
         std::string st = static_cast<std::string>(data);
-        vec_input.push_back(st);
-
-    crow::json::wvalue response_data;
-    response_data["output"] = "hung";
-
-    res = response_data;
-
+        input_vec_string.push_back(st);
 //        max_length_input = std::max(max_length_input, static_cast<int>((generator.encode(data)).size()));
     }
+    time_t start_time = time(nullptr);
+    if(static_cast<std::string>(use_kv_cache) == "false") {
+        std::vector<std::string> output = generator_greedy_search(input_vec_string, use_kv_cache, max_length_output);
+    }
+    else {
+        std::vector<std::string> output2 = generator_greedy_search(input_vec_string, use_kv_cache, max_length_output);
+    }
 
-
-////    std::cout  << "--------------- generator no use kv cache-----------------------------" << std::endl;
-//    res.write("--------------- generator no use kv cache-----------------------------\n");
-//    bool use_kv_cache = false;
-//    auto time_before_loop_begins = time(nullptr);
-//    std::string output = generator.generator_greedy_search(inputs,use_kv_cache, maximum_length_input);
-//    res.write(output + '\n');
-//    auto time_after_loop_ends = time(nullptr);
-//    auto time_diff = time_after_loop_ends - time_before_loop_begins;
-////    std::cout << "Time taken to run generator no use kv cache = " << time_diff << " seconds." << std::endl;
-//
-//    //std::cout  << "--------------- generator use kv cache-----------------------------" << std::endl;
-//    res.write("--------------- generator use use kv cache-----------------------------\n");
-//    time_before_loop_begins = time(nullptr);
-//    use_kv_cache = true;
-//    std::string output2 = generator.generator_greedy_search(inputs, use_kv_cache, maximum_length_input);
-//    res.write(output2 + '\n');
-//    time_after_loop_ends = time(nullptr);
-//    time_diff = time_after_loop_ends - time_before_loop_begins;
-//    res.end();
-////    std::cout << "Time taken to run generator use kv cache = " << time_diff << " seconds." << std::endl;
-//
+    time_t end_time = time(nullptr);
+    response_data["time"] = float(end_time - start_time) /  CLOCKS_PER_SEC;
 }
 
 int main() {

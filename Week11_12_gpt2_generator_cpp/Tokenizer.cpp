@@ -4,7 +4,6 @@
 
 #include "Tokenizer.h"
 
-#include "Tokenizer.h"
 Tokenizer::Tokenizer()= default;
 
 void Tokenizer::read_tokenizer() {
@@ -12,7 +11,7 @@ void Tokenizer::read_tokenizer() {
     std::string st;
     int x;
     while (std::cin >> st >> x) {
-        std::cout << st << " " << x << std::endl;
+//        std::cout << st << " " << x << std::endl;
         token2id->insert({st, x});
         id2token->insert({x, st});
     }

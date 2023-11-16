@@ -9,8 +9,8 @@
 
 class Tokenizer{
 public:
-    std::unique_ptr<std::map<std::string, int>> token2id;
-    std::unique_ptr<std::map<int, std::string>> id2token;
+    std::unique_ptr<std::map<std::string, int>> token2id = std::make_unique<std::map<std::string, int>>();
+    std::unique_ptr<std::map<int, std::string>> id2token = std::make_unique<std::map<int, std::string>>();
 
     Tokenizer();
 

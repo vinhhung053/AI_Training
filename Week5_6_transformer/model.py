@@ -147,7 +147,6 @@ class GPT2(nn.Module):
             current_len = current_len + 1
             x_batch = x_batch[:, -1]
             x_batch = x_batch.reshape(-1, 1)
-        x_batch = torch.tensor(x_batch)
         x_batch = self.embedding(x_batch)
         for index in range(x_batch.shape[0]):
             x_batch[index] = x_batch[index] + self.positional_encoding(x_batch[index], current_len, kv_caches)

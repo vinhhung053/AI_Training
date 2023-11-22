@@ -1,0 +1,6 @@
+{
+  "input":["when i", "my name is"],
+  "use_kv_cache": true,
+  "max_length_output":32
+
+}

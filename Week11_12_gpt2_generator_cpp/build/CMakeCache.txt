@@ -14,9 +14,6 @@
 # EXTERNAL cache entries
 ########################
 
-//Path to a file.
-ASIO_INCLUDE_DIR:PATH=/usr/include
-
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -148,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Week11_12_gpt2_generator_cpp
+CMAKE_PROJECT_NAME:STATIC=gpt2_test
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -212,22 +209,44 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
-//The directory containing a CMake configuration file for Crow.
-Crow_DIR:PATH=/usr/local/lib/cmake/Crow
+//The directory containing a CMake configuration file for Caffe2.
+Caffe2_DIR:PATH=/usr/local/include/libtorch/share/cmake/Caffe2
+
+//The directory containing a CMake configuration file for GTest.
+GTest_DIR:PATH=/usr/local/lib/cmake/GTest
+
+//The directory containing a CMake configuration file for MKLDNN.
+MKLDNN_DIR:PATH=MKLDNN_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for MKL.
+MKL_DIR:PATH=MKL_DIR-NOTFOUND
+
+//Path to a library.
+TORCH_LIBRARY:FILEPATH=/usr/local/include/libtorch/lib/libtorch.so
+
+//Path to a library.
+c10_LIBRARY:FILEPATH=/usr/local/include/libtorch/lib/libc10.so
 
 //Value Computed by CMake
-Week11_12_gpt2_generator_cpp_BINARY_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build
+gpt2_run_BINARY_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build
 
 //Value Computed by CMake
-Week11_12_gpt2_generator_cpp_SOURCE_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp
+gpt2_run_SOURCE_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp
+
+//Value Computed by CMake
+gpt2_test_BINARY_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build
+
+//Value Computed by CMake
+gpt2_test_SOURCE_DIR:STATIC=/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp
+
+//Path to a library.
+kineto_LIBRARY:FILEPATH=/usr/local/include/libtorch/lib/libkineto.a
 
 
 ########################
 # INTERNAL cache entries
 ########################
 
-//ADVANCED property for variable: ASIO_INCLUDE_DIR
-ASIO_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -336,7 +355,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -379,6 +398,8 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Details about finding asio
-FIND_PACKAGE_MESSAGE_DETAILS_asio:INTERNAL=[/usr/include][v()]
+//Details about finding GTest
+FIND_PACKAGE_MESSAGE_DETAILS_GTest:INTERNAL=[/usr/local/lib/cmake/GTest/GTestConfig.cmake][c ][v1.14.0()]
+//Details about finding Torch
+FIND_PACKAGE_MESSAGE_DETAILS_Torch:INTERNAL=[/usr/local/include/libtorch/lib/libtorch.so][/usr/local/include/libtorch/include;/usr/local/include/libtorch/include/torch/csrc/api/include][v()]
 

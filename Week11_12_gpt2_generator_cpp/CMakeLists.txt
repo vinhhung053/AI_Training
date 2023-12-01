@@ -1,35 +1,16 @@
-cmake_minimum_required(VERSION 3.13)
-project(Week11_12_gpt2_generator_cpp)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
+set(CMAKE_CXX_STANDARD 17)
+set(Torch_DIR /usr/local/include/libtorch/share/cmake/Torch)
 
-set(CMAKE_PREFIX_PATH "/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/library/libtorch")
+set(PROJECT_RUN gpt2_run)
+set(PROJECT_TEST gpt2_test)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+enable_testing()
 
-find_package(Torch REQUIRED)
-find_package(Crow)
-
-if (Torch_FOUND)
-    message(STATUS "Torch library found")
-else()
-    message(FATAL_ERROR "Torch library not found.")
-endif()
-
-if (Crow_FOUND)
-    message(STATUS "Crow library found")
-else()
-    message(FATAL_ERROR "Crow library not found.")
-endif()
+project(${PROJECT_RUN})
+project(${PROJECT_TEST})
 
 
-
-
-add_executable(Week11_12_gpt2_generator_cpp main.cpp
-        Header.h
-        Tokenizer.cpp
-        Tokenizer.h
-        Generator.cpp
-        Generator.h)
-
-target_link_libraries(Week11_12_gpt2_generator_cpp PUBLIC Crow::Crow "${TORCH_LIBRARIES}")
-#target_link_libraries(Week11_12_gpt2_generator_cpp )
+#add_subdirectory(src)
+add_subdirectory(src_test)
 

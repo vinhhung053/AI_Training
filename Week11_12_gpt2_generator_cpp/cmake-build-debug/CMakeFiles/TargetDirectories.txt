@@ -1,3 +1,0 @@
-/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/cmake-build-debug/CMakeFiles/Week11_12_gpt2_generator_cpp.dir
-/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir

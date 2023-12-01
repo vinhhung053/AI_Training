@@ -78,6 +78,17 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
 # The main all target
 all: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles/progress.marks
@@ -111,44 +122,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Week11_12_gpt2_generator_cpp
+# Target rules for targets named gpt2_test
 
 # Build rule for target.
-Week11_12_gpt2_generator_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Week11_12_gpt2_generator_cpp
-.PHONY : Week11_12_gpt2_generator_cpp
+gpt2_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gpt2_test
+.PHONY : gpt2_test
 
 # fast build rule for target.
-Week11_12_gpt2_generator_cpp/fast:
-	$(MAKE) -f CMakeFiles/Week11_12_gpt2_generator_cpp.dir/build.make CMakeFiles/Week11_12_gpt2_generator_cpp.dir/build
-.PHONY : Week11_12_gpt2_generator_cpp/fast
-
-main.o: main.cpp.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/Week11_12_gpt2_generator_cpp.dir/build.make CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.o
-.PHONY : main.cpp.o
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/Week11_12_gpt2_generator_cpp.dir/build.make CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/Week11_12_gpt2_generator_cpp.dir/build.make CMakeFiles/Week11_12_gpt2_generator_cpp.dir/main.cpp.s
-.PHONY : main.cpp.s
+gpt2_test/fast:
+	$(MAKE) -f src_test/CMakeFiles/gpt2_test.dir/build.make src_test/CMakeFiles/gpt2_test.dir/build
+.PHONY : gpt2_test/fast
 
 # Help Target
 help:
@@ -158,10 +142,8 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... Week11_12_gpt2_generator_cpp"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... test"
+	@echo "... gpt2_test"
 .PHONY : help
 
 

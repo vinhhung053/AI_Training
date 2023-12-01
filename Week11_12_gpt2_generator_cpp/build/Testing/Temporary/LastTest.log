@@ -1,0 +1,19 @@
+Start testing: Dec 01 18:30 +07
+----------------------------------------------------------
+Unable to find executable: gpt2_test
+1/1 Testing: gpt2_test
+1/1 Test: gpt2_test
+Command: ""
+Directory: /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/src_test
+"gpt2_test" start time: 
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"gpt2_test" end time: Dec 01 18:30 +07
+"gpt2_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 01 18:30 +07

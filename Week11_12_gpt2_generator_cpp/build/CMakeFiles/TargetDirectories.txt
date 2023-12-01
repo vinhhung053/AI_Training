@@ -1,3 +1,7 @@
 /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles/rebuild_cache.dir
 /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles/edit_cache.dir
-/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles/Week11_12_gpt2_generator_cpp.dir
+/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/CMakeFiles/test.dir
+/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/src_test/CMakeFiles/rebuild_cache.dir
+/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/src_test/CMakeFiles/edit_cache.dir
+/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/src_test/CMakeFiles/test.dir
+/home/lap13385/Projects/Zalo_AI_Fresher_Training/Week11_12_gpt2_generator_cpp/build/src_test/CMakeFiles/gpt2_test.dir

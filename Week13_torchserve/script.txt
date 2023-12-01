@@ -1,0 +1,61 @@
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_4 --version 1.0 --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/densenet161-8d451a50.pth --export-path model_store --handler image_classifier
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_6 --version 1.0 --model-file ./serve/examples/image_classifier/densenet_161/model.py --serialized-file model_densenet.pth --export-path model_store --extra-files ./serve/examples/image_classifier/index_to_name.json --handler image_classifier
+
+
+/home/lap13385/.local/bin/
+/home/lap13385/.local/bin/torchserve --start --ncs --model-store model_store --models densenet161_6.mar
+/home/lap13385/.local/bin/torchserve --stop
+
+
+curl http://127.0.0.1:8080/predictions/densenet161_6 -T /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/kitten_small.jpg
+
+
+
+export PS1="\[\e[1;32m\]\u@\h:\w$\[\e[0m\] "
+export PATH=$PATH:/home/lap13385/.local/bin/torch-model-archiver
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_4 --version 1.0 --model-file ./serve/examples/image_classifier/densenet_161/model.py --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/model_densenet.pth --export-path model_store --handler image_classifier
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_6 --version 1.0 --model-file ./serve/examples/image_classifier/densenet_161/model.py  --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/model_densenet.pth --export-path model_store --handler image_classifier
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_7 --version 1.0  --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/model_densenet.pth --export-path model_store --handler image_classifier
+
+/home/lap13385/.local/bin/torchserve --start --ncs --model-store model_store --models densenet161_6.mar
+
+curl http://127.0.0.1:8080/predictions/densenet161_6 -T /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/kitten_small.jpg
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name densenet161_2121 --version 1.0  --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/scripted_model.pt --export-path model_store --handler ./serve/ts/torch_handler/image_classifier
+
+
+/home/lap13385/.local/bin/torchserve --start --ncs --model-store model_store --models densenet161_2121.mar
+
+curl http://127.0.0.1:8080/predictions/densenet161_2121 -T /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/kitten_small.jpg
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name my_model6 --version 1.0  --serialized-file /home/lap13385/Projects/Zalo_AI_Fresher_Training/Week13_torchserve/scripted_my_model.pt --export-path model_store --handler ./serve/ts/torch_handler/my_handler
+
+/home/lap13385/.local/bin/torchserve --start --ncs --model-store model_store --models my_model6.mar
+
+curl -X POST http://127.0.0.1:8080/predictions/my_model6 \
+  -H "Content-Type: application/json" \
+  -d '{"data": [1, 2, 3, 4, 5]}'
+  
+ curl -X POST http://127.0.0.1:8080/predictions/my_model8 \
+  -H "Content-Type: application/json" \
+  -d '{"data": {"input_list": [1, 2, 3, 4, 5]}}'
+
+
+
+curl http://127.0.0.1:8080/predictions/my_model6 -d 2
+
+/home/lap13385/.local/bin/torch-model-archiver --model-name gpt2_16 --version 1.0  --serialized-file m1.pt --export-path model_store --handler ./serve/ts/torch_handler/gpt2_handler
+
+/home/lap13385/.local/bin/torchserve --start --ncs --model-store model_store --models gpt2_16.mar
+
+curl -X POST http://127.0.0.1:8080/predictions/gpt2_16 \
+  -H "Content-Type: application/json" \
+  -d '{"data": ["when i was young", "my name"]}'
+
+
+
+
